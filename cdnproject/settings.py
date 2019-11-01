@@ -26,7 +26,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR,'templates')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*','.herokuapp.com']
+ALLOWED_HOSTS = ['*','.herokuapp.com','127.0.0.1', '.pythonanywhere.com']
 
 
 # Application definition
@@ -182,6 +182,5 @@ except ImportError:
     pass
 
 if not DEBUG:
-    SECRET_KEY = os.environ['SECRET_KEY']
     import django_heroku 
     django_heroku.settings(locals()) 
