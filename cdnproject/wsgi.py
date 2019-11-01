@@ -18,11 +18,4 @@ import sys
 # Djangoの環境設定ファイル(settings.py)を指定
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cdnproject.settings')
 
-#application = get_wsgi_application()
-path = '/Users/hiro/Documents/GitHub/Django_API/cdnproject'
-if path not in sys.path:
-    sys.path.append(path)
- 
-# then:
-from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
