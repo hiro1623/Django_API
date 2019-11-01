@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.1/howto/deployment/wsgi/
 
 import os
 import sys
-from django.core.wsgi import get_wsgi_application
+#from django.core.wsgi import get_wsgi_application
 
 # Djangoプロジェクトへのパスを通す(不要な可能性あり)
 #sys.path.append("/Users/okano/Documents/03_dev/GitHub/cdnproject")
@@ -18,4 +18,11 @@ from django.core.wsgi import get_wsgi_application
 # Djangoの環境設定ファイル(settings.py)を指定
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cdnproject.settings')
 
+#application = get_wsgi_application()
+path = '/Users/hiro/Documents/GitHub/Django_API/cdnproject'
+if path not in sys.path:
+    sys.path.append(path)
+ 
+# then:
+from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
