@@ -21,11 +21,10 @@ TEMPLATES_DIR = os.path.join(BASE_DIR,'templates')
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = '6d0&br-^3t$y_(1p%c$q5#q-^b((9mo6_hyups@*s*svw@j*t@'
+SECRET_KEY = '6d0&br-^3t$y_(1p%c$q5#q-^b((9mo6_hyups@*s*svw@j*t@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
+DEBUG = True
 ALLOWED_HOSTS = ['*','.herokuapp.com','127.0.0.1', '.pythonanywhere.com']
 
 
@@ -174,13 +173,4 @@ REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY': 'detail',
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
-DEBUG = True
 
-try:
-    from .local_settings import *
-except ImportError:
-    pass
-
-if not DEBUG:
-    import django_heroku 
-    django_heroku.settings(locals()) 
