@@ -10,12 +10,15 @@ https://docs.djangoproject.com/en/2.1/howto/deployment/wsgi/
 import os
 import sys
 from django.core.wsgi import get_wsgi_application
-
+from dj_static import Cling
 # Djangoプロジェクトへのパスを通す(不要な可能性あり)
 #sys.path.append("/Users/okano/Documents/03_dev/GitHub/cdnproject")
 #sys.path.append("/Users/okano/Documents/03_dev/GitHub/cdnproject/cdnproject")
 
 # Djangoの環境設定ファイル(settings.py)を指定
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cdnproject.settings')
+#os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cdnproject.settings')
+#application = get_wsgi_application()
 
-application = get_wsgi_application()
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cdnproject.settings")
+
+application = Cling(get_wsgi_application())
