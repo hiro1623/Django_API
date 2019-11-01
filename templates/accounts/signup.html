@@ -1,0 +1,43 @@
+{% load static %}
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>TOWN HERO SIGNUP</title>
+    <script src="{% static '/api/jquery-3.4.1.js' %}"></script>
+    <script src="{% static '/script/fullscreen.js' %}"></script>
+    <!-- stylesheet -->
+    <link rel="stylesheet" href="{% static '/css/signup.css' %}">
+  </head>
+
+  <body>
+    <!-- TOWN HEROのロゴマーク -->
+    <div class="logo">
+      <img id="logo_img" src="{% static '/images/logo_white.png' %}">
+    </div>
+    <p class="page">SIGN UP</p>
+
+    <!-- サインアップ入力フォーム -->
+    <div class="inputForm">
+      <form method="post">
+        {% csrf_token %}
+        <!-- {{ form.as_p }} -->
+        <ul><li>ユーザー名は15文字以内で設定可能です</li></ul>
+        <div class="post_form">
+          <input type="text" name="username" placeholder="ユーザー名" maxlength="15" autofocus required id="id_username">
+        </div>
+        <ul>
+            <li>パスワードは8文字以上から設定できます</li>
+            <li>パスワードを数字のみでは設定できません</li>
+            <li>ユーザー名に似たパスワードは使用できません</li>
+          </ul>
+        <div class="post_form">
+          <input type="password" name="password1" placeholder="パスワード" required id="id_password1">
+          <input type="password" name="password2" placeholder="パスワードの再入力" required id="id_password2">
+        </div>
+        <div class="post_submit">
+          <button type="submit" class="submit">アカウント作成</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

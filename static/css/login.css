@@ -1,0 +1,102 @@
+input[type="submit"]{
+  -webkit-appearance: none;
+}
+
+body {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(150,150,150,1.0);
+  /* flexible boxの設定 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* ロゴマーク */
+div.logo {
+  width: 70%;
+}
+div.logo img {
+  width: 100%;
+}
+p.page {
+  margin:  25px;
+  font-size: 70px;
+  color: white;
+  font-family: "",sans-serif;
+  font-weight: 800;
+}
+
+/* 入力フォーム  */
+div.inputForm {
+  width: 75%;
+  height: auto;
+  padding: 8% 0;
+  max-width: none;
+  max-height: none;
+  background-color: rgba(200,200,200,2.0);
+  border-radius: 50px;
+  font-size: 24px;
+  /* flexible boxの設定 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+div.inputForm .post_form {
+  margin: 10px;
+  display: block;
+  width: 55vw;
+}
+div.inputForm .post_form input {
+  width: 100%;
+  margin: 10px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 0px;
+  border-style: none;
+  font-size: 30px;
+}
+div.inputForm .post_submit {
+  width: 55vw;
+  margin: 10px;
+  background-color: black;
+  text-align: center;
+}
+div.inputForm .post_submit input {
+  padding: 10px;
+  background-color: black;
+  border-radius: 0px;
+  border-style: none;
+  font-size: 30px;
+  font-weight: 800;
+  color: white;
+}
+.error_message {
+  margin: 0px;
+  color: rgba(256,122,71,1);
+  font-size: 30px;
+  font-family: sans-serif;
+}
+
+/* サインアップ画面への遷移ボタン */
+div.toSignup {
+  width: 50%;
+  margin: 50px;
+  text-align: center;
+}
+
+div.toSignup button {
+  width: 100%;
+  padding: 15px;
+  border: solid;
+  border-color: white;
+  border-radius: 15px;
+  border-width: thick;
+  background-color: rgba(150,150,150,1.0);
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+}

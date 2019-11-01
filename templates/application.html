@@ -1,0 +1,349 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title>TOWN HERO</title>
+    <!-- API -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
+    <script src="{% static '/api/L.Icon.Pulse.js' %}"></script>
+    <script src="{% static '/api/jquery-3.4.1.js' %}"></script>
+    <link rel="stylesheet" href="{% static '/api/L.Icon.Pulse.css' %}">
+    <link rel="stylesheet" href="{% static '/api/L.Icon.Pulse.leaflet-control-layers-separator' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin="">
+    
+    <!--Global values-->
+    <script>
+        var posted_data = [
+        {% for locate in location %}
+        {% if not forloop.first %},{% endif %}
+        {
+            id: {{locate.id}},
+            lat: {{ locate.lat }},
+            lng: {{ locate.lng }},
+            purpose: "",
+            message: "",
+            post_time: "",
+            post_flag:"",
+            pic:"",
+        }
+        {% endfor %}
+    ];
+
+    
+    {% for post in posts %}
+        posted_data[{{post.id}}-1].purpose='{{post.purpose}}';
+        posted_data[{{post.id}}-1].message='{{post.message}}';
+        posted_data[{{post.id}}-1].post_flag="{{post.post_flag}}";
+        posted_data[{{post.id}}-1].post_time='{{post.post_time|date:"SHORT_DATE_FORMAT"}}';
+        {% if post.pic%}
+            posted_data[{{post.id}}-1].pic='{{post.pic.url}}';
+        {%endif%}
+     console.log(posted_data[{{post.id}}-1].post_flag);
+    {%endfor%}
+    </script>
+    <!-- script -->
+    <script src="{% static '/script/map.js' %}"></script>
+    <script src="{% static '/script/fullscreen.js' %}"></script>
+    <!--<script src="{% static '/script/minimap.js' %}"></script>-->
+    <script src="{% static '/script/leaflet-simple-map-screenshoter.js' %}"></script>
+    <!-- stylesheet-->
+    <link rel="stylesheet" href="{% static '/css/menu.css'%}">
+    <link rel="stylesheet" href="{% static '/css/map.css'%}">
+    <!-- <link rel="stylesheet" href="{% static '/css/minimap.css'%}"> -->
+
+</head>
+
+<body onload="main()">
+
+    <div id="vueEvent">
+        <div v-show="!contentsLoaded" class="loading">
+            <img src="{%static '/images/ajax-loader.gif'%}" alt="">
+        </div>
+        <div>
+            <header>
+                <div class="login_name">
+                    <img src="{%static '/images/loginicon.png'%}" alt=""> {% if user.is_authenticated %}
+                    <p>{{ user.get_username }}</p>
+                    {% else %}
+                    <p>Guest</p>
+                    {% endif %}
+                </div>
+
+                <!-- 上部menu表示部 ver.Hiro -->
+                <div class="menu_top">
+                    <button type="button" v-on:click="contentActive='setting'">
+                        <i class="fas fa-cogs"></i>
+                    </button>
+                </div>
+
+            </header>
+
+            <!-- app body -->
+
+            <!--<form method="post">-->
+            <form action="{% url 'mapApp:post' %}"  method = "post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div id="post" class="app_body" v-show="contentActive === 'post'">
+                    <div class="area1">
+                        <button class="post_reset" type="reset">リセット</button>
+                        <button v-on:click="sendLocation" class="post_send" type="submit" name="submit_token" value="{{submit_token}}">送信</button>
+                    </div>
+                    <div class="area2">
+                        <p class="post_label">投稿属性</p>
+                        <p class="post_input">
+                            {{forms.purpose}}
+                        </p>
+                        <!--<select class="post_input" name="purpose">
+                            <option value="災害情報">災害情報</option>
+            <option value="救助依頼">救助依頼</option>
+            <option value="落とし物">落としもの{{username.get}}</option>
+            </select>-->
+                    </div>
+                    <div class="area3">
+                        <p class="post_label">投稿本文</p>
+                        <p class="post_input">
+                            {{forms.message}}
+                        </p>
+                        <!--<textarea class="post_input" name="message"></textarea>-->
+                    </div>
+                    <div class="area4">
+                        <p class="post_label">投稿写真</p>
+                        <!--<input class="post_input" type="file" name="pic" />-->
+                        <p class="post_input">
+                            {{forms.pic}}
+                        </p>
+                    </div>
+                    <div class="area5">
+                        <div class="lefttext">
+                            <p class="post_label_wide">位置情報</p>
+                            <p class="post_deteal">投稿場所はここであっていますか？<br>変更したい場合は地図をタップしてください</p>
+                        </div>
+                        <div id="minimap"></div>
+                        <!-- <div id="mapsScreeningState"></div>
+                        <div class="maps">
+                            <div>hist
+                                <div id="mapSimple"></div>
+                            </div>
+                            <div>
+                                <div id="minimap"></div>
+                                <button id="screenMap">Take and download screen</button>
+                                <button id="screenMapAndPast">Take screen and past to body</button>
+                                <div id="screens"></div>
+                            </div>
+                        </div> -->
+
+                    </div>
+                </div>
+            </form>
+
+            <div id="history" class="app_body" v-show="contentActive === 'history'">
+                {% for post in posts %} 
+                {% if user.get_username == post.user.username and post.post_flag == True %}
+                
+                <div class="histBox">
+                    <div class="upbar">
+                        <B>{{ post.post_time }}</B>
+                        <form action="{% url 'mapApp:delete' %}"  method = "post" >
+                        {% csrf_token %}
+                        <button name = "id" value="{{post.id}}">終了する？</button>
+                        </form>
+                    </div>
+                    <div class="downbar">
+                        <div class="downbar_left">
+                            
+                              {% if post.purpose == "SOS" %}
+                                <img src="{%static '/images/pin/pin_red.png' %}" /> 
+                            {% elif post.purpose == "災害情報" %}
+                                <img src="{%static '/images/pin/pin_blue.png' %}" /> 
+                            {% elif post.purpose == "落し物" %}
+                                <img src="{%static '/images/pin/pin_green.png' %}" /> 
+                            {% elif post.purpose == "人探し" %}
+                                <img src="{%static '/images/pin/pin_yellow.png' %}" /> 
+                            {% elif post.purpose == "その他" %}
+                                <img src="{%static '/images/pin/pin_pink.png' %}" /> 
+                            {% endif %}
+
+                            <p>{{ post.purpose }}</p>
+                        </div>
+                        <div class="downbar_right">
+                          {{ post.message }}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <div id="setting" class="app_body" v-show="contentActive === 'setting'">
+                <a href="{% url 'logout' %}">
+                    <button class="logout_btn" href="{}">LOGOUT</button>
+                </a>
+
+            </div>
+
+            <!-- map表示部 -->
+            <div id="mapcontainer" style="position:absolute;top:0;left:0;right:0;bottom:0;"></div>
+
+            <footer>
+                <!-- 下部menu表示部 -->
+                <div class="menu_bar">
+                    <!-- menu button -->
+                    <button class="menu_btn" type="button" v-bind:class="[contentActive === 'map' ? 'menu_btn_selected' : 'menu_btn_nonselect']" v-on:click="contentActive ='map'">
+          <img class="menu_icon" src="{%static '/images/map_ffffff.png'%}" />
+          <!--<i class="menu_icon fa-map-marked-alt"></i>-->
+          <br />地図
+        </button>
+                    <button class="menu_btn" id="postbtn" type="button" v-bind:class="[contentActive === 'post' ? 'menu_btn_selected' : 'menu_btn_nonselect']" v-on:click="contentActive ='post'">
+          <img class=" menu_icon " src="{%static '/images/help_ffffff.png'%} " />
+          <br />投稿
+        </button>
+                    <button class="menu_btn " type="button " v-bind:class="[contentActive==='history' ? 'menu_btn_selected' : 'menu_btn_nonselect'] " v-on:click="contentActive='history' ">
+          <img class="menu_icon " src="{%static '/images/history_ffffff.png'%} " />
+          <br />履歴
+        </button>
+                    <!-- menu back -->
+                </div>
+
+            </footer>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<!-- 
+  Vue.js v2.6.10
+
+ (c) 2014-2019 Evan You
+ Released under the MIT License.-->
+<script src="{% static '/script/vue.js' %} "></script>
+<script>
+    var contents = new Vue({
+        el: '#vueEvent',
+        data: {
+            contentActive: 'map',
+            contentsLoaded: false,
+            lat: 0,
+            lng: 0,
+            id: 0,
+        },
+        mounted: function() {
+            /*
+            axios
+            .get('https://hiro.local/map/')
+            .then(function(response) {
+                    contents.contentsLoaded = true
+                    console.log(response)
+                })
+                .catch(function(error) {
+                    console.log(error)
+                })
+                */
+
+        },
+        methods: {
+            sendLocation: function(event) {
+                    var csrftoken = Cookies.get('csrftoken');
+                    var headers = {
+                        'X-CSRFToken': csrftoken
+                    };
+                    var data = {
+                        "lat": contents.lat,
+                        "lng": contents.lng,
+                    };
+                    axios
+                        .post("{% url 'mapApp:geo' %} ", data, {
+                            headers: headers
+                        })
+                        .then(respose => {
+                            alert("LocationSucces!!")
+                        })
+                       .catch(function (error) {
+                        
+                        if (error.response) {
+                            // The request was made and the server responded with a status code
+                            // that falls out of the range of 2xx
+                            alert("the server responded with a status code")
+                            alert(JSON.stringify(error.response.data));
+                            alert(JSON.stringify(error.response.status));      // 例：400
+                            alert(JSON.stringify(error.response.statusText));  // Bad Request
+                            alert(JSON.stringify(error.response.headers));
+                        } else if (error.request) {
+                            // The request was made but no response was received
+                            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                            // http.ClientRequest in node.js
+                            alert("no response was received")
+                            alert(JSON.stringify(error.request));
+                        } else {
+                            // Something happened in setting up the request that triggered an Error
+                            alert("Something error")
+                            alert(JSON.stringify('Error', error.message));
+                        }
+                        alert("Error config")
+                        alert(JSON.stringify(error.config));
+                        
+                    })
+            },
+            deletePost: function(id) {
+                var csrftoken = Cookies.get('csrftoken');
+                var headers = {
+                    'X-CSRFToken': csrftoken
+                };
+                var data = {
+                    "id": contents.id = id,
+                };
+                axios
+                    .post("{% url 'mapApp:delete' %} ", data, {
+                        headers: headers
+                    })
+                    .then(respose => {})
+                    .catch(error => {
+                        alert(error)
+                    })
+                location.reload();
+            }
+
+        }
+    });
+
+    navigator.geolocation.getCurrentPosition(function succes_func(position) {
+        //lat:緯度　lng:経度
+        contents.lat = position.coords.latitude;
+        contents.lng = position.coords.longitude;
+     
+        var intpoint = [contents.lat+0.0022, contents.lng-0.0026];
+        var osm = L.tileLayer('https://tile.openstreetmap.jp/{z}/{x}/{y}.png', { attribution: "<a href='http://osm.org/copyright' target='_blank'>OpenStreetMap</a> " });
+        //var osm = L.tileLayer('/static/osm/{z}/{x}/{y}.png');
+
+        var minimap = L.map('minimap', {
+            layers: [osm],
+            center: intpoint,
+            maxZoom: 15,
+            minZoom: 15,
+            zoom: 15,
+            zoomControl: false
+        });
+
+        var targetPlace = L.marker([contents.lat, contents.lng]);
+        targetPlace.addTo(minimap);
+
+        minimap.on('click', function(e) {
+            // クリック位置経緯度取得
+            contents.lat = e.latlng.lat;
+            contents.lng = e.latlng.lng;
+            //alert("4:" + contents.lat)
+            //alert("5:" + 1)
+            minimap.removeLayer(targetPlace);
+            targetPlace = L.marker([contents.lat, contents.lng]).addTo(minimap);
+        });
+    });
+</script>

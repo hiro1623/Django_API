@@ -1,0 +1,392 @@
+/***** menu.css *****/
+input[type="submit"]{
+    -webkit-appearance: none;
+}
+
+
+/* base */
+
+body {
+    font-family: sans-serif;
+    margin: 0px;
+    padding: 0px;
+}
+
+header {
+    width: 100%;
+    height: 20vw;
+    position: absolute;
+    top:0;
+}
+
+
+/* spa用の初期化 */
+
+
+/* 上部メニュー */
+
+.login_name {
+    position: absolute;
+    font-weight: bolder;
+    font-size: 14px;
+    font-style: italic;
+    z-index: 1;
+    top: 2vw;
+    left: 4vw;
+}
+
+.login_name img {
+    height: 6vw;
+    padding-left: 1vw;
+}
+
+.login_name p {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-color: silver;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 6px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.menu_top {
+    position: absolute;
+    top: 3vw;
+    right: 3vw;
+    z-index: 1;
+    border: 0;
+}
+
+.menu_top :active {
+    color: rgb(214, 214, 214);
+}
+
+.menu_top>button {
+    color: none;
+    border: 0;
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
+.menu_top>button>i {
+    font-size: 3em;
+    color: gray;
+}
+
+
+/* 下部メニュー */
+
+.menu_bar {
+    background-color: rgba(255, 255, 255, 0.7);
+    bottom: 0;
+    width: 100%;
+    height: 70px;
+    position: fixed;
+    z-index: 2;
+}
+.menu_btn {
+    position: relative;
+    color: rgba(50, 50, 50, 1);
+    font-size: 10px;
+    display: inline-block;
+    background-color: rgba(1, 1, 1, 0);
+    text-align: center;
+    left: 5%;
+    width: 13%;
+    height: 100%;
+    cursor: pointer;
+    border-style: none;
+}
+.menu_btn_selected {
+    color: #ffffff;
+    background-color: rgba(150, 150, 150, 1.0);
+}
+.menu_btn_nonselect img {
+    -webkit-filter: brightness(50%);
+    filter: brightness(50%);
+}
+.menu_icon {
+    display: inline-block;
+    position: center;
+    width: 25px;
+    height: 25px;
+}
+
+
+/****** map,post,histry css ******/
+
+#map {
+    background-color: rgba(150, 150, 150, 1);
+    color: #ffffff;
+}
+
+#post {
+    display: block;
+    width: 80%;
+    height: 60%;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    border-radius: 10px;
+    margin: auto;
+    position: absolute;
+    color: rgba(0, 138, 255, 1);
+    text-align: left;
+    padding: 3px;
+    background-color: rgba(255, 255, 255, 0.9);
+    font-size: 12px;
+}
+
+.post_label {
+    line-height: 100%;
+    left: 5px;
+    display: inline-block;
+    position: absolute;
+    width: 20%;
+}
+
+.post_input {
+    top: 5px;
+    line-height: 100%;
+    display: inline-block;
+    position: absolute;
+    margin: auto auto auto 20%;
+    background-color: rgba(0,0,0,0);
+}
+.post_input textarea {
+    max-width: 80%;
+    border: none;
+    background-color: rgba(0,0,0,0);
+}
+
+.area1 {
+    text-align: left;
+    position: relative;
+    padding: 0px 0px 0px 0px;
+    width: 100%;
+    height: 10%;
+    border-bottom: solid;
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+    border-width: 1px;
+}
+
+button.post_reset {
+    display: inline-block;
+    position: abusolute;
+    padding: 1px;
+    margin: auto auto auto 7px;
+    height: 90%;
+    z-index: 100;
+    font-size: 18px;
+    letter-spacing: 0px;
+    color: rgba(0, 138, 255, 1.0);
+    background-color: rgba(0,0,0,0);
+    border: none;
+}
+
+button.post_reset:active {
+    color: rgba(0, 108, 200, 1.0);
+}
+
+button.post_send {
+    display: inline-block;
+    position: absolute;
+    right: 7px;
+    padding: 1px;
+    margin: auto auto auto auto;
+    height: 90%;
+    z-index: 100;
+    font-size: 18px;
+    letter-spacing: 0px;
+    background-color: rgba(0,0,0,0);
+    border: none;
+    color: rgba(0, 138, 255, 1.0);
+}
+
+.area2 {
+    position: relative;
+    padding: 0px;
+    width: 100%;
+    height: 10%;
+    border-bottom: solid;
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+    border-width: 1px;
+}
+
+.area3 {
+    position: relative;
+    width: 100%;
+    height: 30%;
+    border-bottom: solid;
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+    border-width: 1px;
+}
+
+textarea.post_input {
+    height: 70%;
+    top: 0;
+    bottom: 0;
+    margin: auto auto auto 20%;
+}
+
+.area4 {
+    position: relative;
+    width: 100%;
+    height: 10%;
+    border-bottom: solid;
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+    border-width: 1px;
+}
+
+.area5 {
+    position: relative;
+    width: 100%;
+    height: 40%;
+    padding: 5px;
+}
+.area5 .lefttext {
+    display: inline-block;
+    width: 50%;
+    height: 100%;
+}
+.area5 .post_label_wide {
+    top: 0;
+    position: relative;
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0px;
+    padding: 0px;
+}
+
+.area5 .post_deteal {
+    margin: auto 0;
+    color: rgba(75,75,75,1);
+    margin: 0px;
+    padding: 0px;
+}
+.area5 #minimap {
+    display: inline-block;
+    width: 30vW;
+    height: 30vw;
+}
+.area5 .leaflet-tile {
+    visibility: visible;
+}
+
+
+/* 投稿用部分 */
+
+.app_body {
+    display: block;
+    width: 85%;
+    height: 100vw;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+    position: relative;
+    text-align: left;
+    z-index: 1;
+}
+
+#setting {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-color: silver;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 12px;
+    margin: auto auto;
+    padding: 2vw 2vw;
+    text-align: center;
+    top: 0vw;
+    height: 5vw;
+    width: 15vw;
+}
+
+#setting>.logout_btn {
+    font-size: 2vw;
+    margin-top: 10%;
+    padding: auto auto;
+    border-color: silver;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 4px;
+}
+
+#history {
+    position: absolute;
+    width: 85vw;
+    height: 75vh;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+    overflow: auto;
+    font-family: sans-serif;
+}
+
+.histBox {
+    max-width: 78vw;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin: 3px 0;
+    padding: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 0;
+}
+.histBox .upbar {
+    display: block;
+    width: 100%;
+    margin: 15px;
+}
+.histbox .upbar button {
+    display: inline-block;
+    right: 0;
+}
+.histBox .downbar {
+    display: block;
+    width: 100%;
+    margin: 10px;
+}
+.upbar button{
+    position: absolute;
+    right:12px;
+    font-size: 14px;
+}
+.downbar_left {
+    display: inline-block;
+    width: 100px;
+    font-size: 14px;
+    vertical-align: top;
+}
+.downbar_left p{
+    position: relative;
+    left:12spx;
+    text-align: center;
+    width: 50%;
+    font-size: 14px;
+    
+}
+.histBox .downbar_left img {
+    text-align: left;
+
+}
+.histBox .downbar_right {
+    display: inline-block;
+    width: 35vw;
+    height: 30vw;
+    font-size: 20px;
+    text-align: center;
+    vertical-align: top;
+}
+.histBox .downbar img {
+    display: inline-block;
+    max-width: 20vw;
+    max-height: 20vw;
+}

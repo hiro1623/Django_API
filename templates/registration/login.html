@@ -1,0 +1,65 @@
+{% load static %}
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>TOWN HERO LOGIN</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <script src="{% static '/api/jquery-3.4.1.js' %}"></script>
+    <script src="{% static '/script/fullscreen.js' %}"></script>
+    <!-- stylesheet -->
+    <link rel="stylesheet" href="{% static '/css/login.css' %}">
+  </head>
+
+  <body>
+    <!-- TOWN HEROのロゴマーク -->
+    <div class="logo">
+      <img id="logo_img" src="{% static '/images/logo_white.png' %}">
+    </div>
+      <p class="page">LOG IN</p>
+    
+
+    <!-- ログイン入力フォーム -->
+    <div class="inputForm">
+      {% if form.errors %}
+      <p class="error_message">パスワードか名前が一致しません</p>
+      {% endif %}
+      {% if next %}
+          {% if user.is_authenticated %}
+          <p class="error_message">ログイン後に指定のページを閲覧できます</p>
+          {% else %}
+          <p class="error_message">ログイン後に指定のページを閲覧できます</p>
+          {% endif %}
+      {% endif %}
+      <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <!--
+        <table>
+          <tr>
+            <td>{{ form.username.label_tag }}</td>
+            <td>{{ form.username }}</td>
+          </tr>
+          <tr>
+            <td>{{ form.password.label_tag }}</td>
+            <td>{{ form.password }}</td>
+          </tr>
+        </table>-->
+        <div class="post_form">
+          <input type="text" name="username" placeholder="ユーザー名" auto focus required id="id_username">
+          <input type="password" name="password" placeholder="パスワード" required id="id_password">
+        </div>
+        <div class="post_submit">
+          <input type="submit" value="ログイン" />
+          <input type="hidden" name="next" value="{{ next }}" />
+        </div>
+      </form>
+    </div>
+
+    <!-- サインアップ画面への遷移ボタン -->
+    <div class="toSignup">
+      <a href="/accounts/signup" class="toSignup_button">
+        <button type="button">アカウントの作成はこちら</button>
+      </a>
+    </div>
+  </body>
+</html>
