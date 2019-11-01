@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.1/howto/deployment/wsgi/
 
 import os
 import sys
-#from django.core.wsgi import get_wsgi_application
+from django.core.wsgi import get_wsgi_application
 
 # Djangoプロジェクトへのパスを通す(不要な可能性あり)
 #sys.path.append("/Users/okano/Documents/03_dev/GitHub/cdnproject")
