@@ -26,7 +26,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR,'templates')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*','.herokuapp.com']
 
 
 # Application definition
@@ -174,7 +174,7 @@ REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY': 'detail',
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
-DEBUG = False
+DEBUG = True
 
 try:
     from .local_settings import *
